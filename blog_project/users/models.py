@@ -8,7 +8,7 @@ class Customer(AbstractUser):
     is_active = models.BooleanField(default=True)
     
     groups = models.ManyToManyField(
-        'authy.Group',
+        'auth.Group',
         related_name='customer_set',
         blank=True,
         help_text='The groups this user belongs to.',
