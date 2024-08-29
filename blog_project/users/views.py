@@ -9,7 +9,7 @@ from rest_framework.response import Response
 class CustomerCreateView(generics.CreateAPIView):
     queryset = Customer .objects.all()
     serializer_class = CustomerSerializer
-    def create(self, request, xargs, **kwargs):
+    def create(self, request, *args, **kwargs):
         serializer = self.get_serializer (data=request. data)
         try:
             serializer.is_valid(raise_exception=True)
