@@ -44,6 +44,26 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = 'users.Customer'
 
+# セッション認証のために追加
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+}
+
+# フロントエンドからのリクエストでセッションを使用するため
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',  # React アプリがホストされている場所
+]
+
+# CORSのcookieを含むリクエストを許可する
+CORS_ALLOW_CREDENTIALS = True
+
+# クロスサイトでcookieが送信されるようにする
+# SESSION_COOKIE_SAMESITE = 'None'
+# SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = False
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

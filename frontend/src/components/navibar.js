@@ -10,7 +10,7 @@ const Navbar = () => {
                     <h1 className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">MyBlog</h1>
                 </Link>
                 <div className="flex items-center space-x-6 rtl:space-x-reverse">
-                    <Link to="" className="dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg px-5 py-1 transition-colors duration-200">Login</Link>
+                    <Link to="/customer/login/" className="dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg px-5 py-1 transition-colors duration-200">Login</Link>
                 </div>
             </div>
         </nav>
