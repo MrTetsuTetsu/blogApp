@@ -1,2 +1,5 @@
 #python仮想環境envディレクトリむっしー
 /env
+
+#pychache
+__pycache__/
