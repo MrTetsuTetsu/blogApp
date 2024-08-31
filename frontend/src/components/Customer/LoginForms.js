@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
     // ユーザー情報を管理するために
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+
+    const navigate = useNavigate(); // useNavigate フックを使用
+
     // apiにユーザー情報送信トライ
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-          const response = await axios.post('', {
+          const response = await axios.post('http://localhost:8000/api/login/', {
             username,
             password
-          });
+          }, {withCredentials: true});
           setMessage('Login Success!');
-          console.log(response.data);
+          console.log(response);
+          navigate('/customer/profile');
         } catch (error) {
           console.error('There was an error registering!', error);
           setMessage('There was an error registering!');
