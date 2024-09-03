@@ -1,47 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { getCustomerProfiles } from '../../api';
+import { useAuth } from '../../hooks/AuthContext';
 
-const fetchCsrfToken = async () => {
-  try {
-      const response = await axios.get('http://localhost:8000/api/csrf-token/', { withCredentials: true });
-      return response.data.csrfToken;
-  } catch (error) {
-      console.error('Error fetching CSRF token:', error);
-  }
-};
 
 const Profile = () => {
   const [user, setUser] = useState(null);
-  const [csrfToken, setCsrfToken] = useState('');
   const navigate = useNavigate(); // useNavigate フックを使用
+  const { logout } = useAuth();
 
   useEffect(() => {
-    axios.get('http://localhost:8000/api/profile/', {withCredentials: true})
-    .then(response => {
-      setUser(response.data);
-    })
-    .catch(error => {
-      console.error('There was an error!', error);
-    });
+    async function fetchData() {
+      const response = await getCustomerProfiles();
+      if (response) {
+        setUser(response.data);
+      }
+    }
+    fetchData();
   }, []);
 
   const handleLogout = async() => {
-    const csrfToken = await fetchCsrfToken();
-    console.log('000000000')
-    console.log(csrfToken)
-    axios.post('http://localhost:8000/api/logout/', {},{withCredentials: true, 
-      headers: {
-      'X-CSRFToken': csrfToken
-  }})
-      .then(response => {
-        setUser(null);
-        // Optionally redirect to login page or home page
-        navigate('/customer/login')
-      })
-      .catch(error => {
-        console.error('There was an error logging out!', error);
-      });
+    await logout();
+    setUser(null);
+    navigate('/customer/login')
   };
 
   if (!user) {
