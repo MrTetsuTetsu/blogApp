@@ -62,3 +62,31 @@ class LogoutView(APIView):
         response.delete_cookie('sessionid', path='/', samesite='Lax')  # クッキー削除
         return response
     
+#プロフィール更新
+class UserUpdateView(generics.UpdateAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        # 現在のログインユーザーを取得して更新対象にする
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        print(self.get_object());
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception as e:
+            print(f"Validation error: {serializer.errors}")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # 更新後にキャッシュをクリアする場合
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+    

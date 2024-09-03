@@ -1,4 +1,3 @@
-import React from 'react';
 import NewCustomerCreate from './components/Customer/NewCustomerCreate';
 import { BrowserRouter as Router, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from './hooks/AuthContext';
