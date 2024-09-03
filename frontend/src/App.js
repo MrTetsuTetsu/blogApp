@@ -10,7 +10,7 @@ const App = () => {
   return (
     <Router>
       <div>
-        {/* <Navbar /> */}
+        <Navbar />
         <div>
           <Routes>
             <Route exact path="/customer/create" element={<NewCustomerCreate />} />
