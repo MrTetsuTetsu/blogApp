@@ -46,3 +46,17 @@ export const getCustomerProfiles = async() => {
         throw error;
     }
 }
+
+export const updateCustomerProfile = async(formData) => {
+    try {
+        const csrfToken = await fetchCsrfToken();
+        const response = await API.patch('update/', formData, {
+        headers: {
+          'X-CSRFToken': csrfToken
+        }
+      });
+      return response;
+    } catch (error) {
+        throw error;
+    }
+}
