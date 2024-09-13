@@ -42,6 +42,7 @@ export const AuthProvider = ({ children }) => {
         } catch (error) {
           console.error('You are not logged in!');
           setIsAuthenticated(false);
+          setUser(null);
         } finally {
           setLoading(false);
         }
@@ -67,3 +68,4 @@ export const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     );
 };
+
