@@ -60,3 +60,35 @@ export const updateCustomerProfile = async(formData) => {
         throw error;
     }
 }
+
+export const changePassword = async (formData) => {
+    try {
+        const csrfToken = await fetchCsrfToken();
+        const response = await API.post('change-password/', {
+            current_password: formData.currentPassword, 
+            new_password: formData.newPassword
+        }, {
+            headers: {
+                'X-CSRFToken': csrfToken
+            }
+        });
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
+
+// 退会リクエストを送信する関数
+export const deleteCustomer = async () => {
+    try {
+        const csrfToken = await fetchCsrfToken();
+        const response = await API.delete('delete/', {
+            headers: {
+                'X-CSRFToken': csrfToken
+            }
+        });
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
