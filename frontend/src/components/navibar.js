@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/AuthContext';
 
@@ -7,11 +7,21 @@ const Navbar = () => {
     const { isAuthenticated, loading, user, logout } = useAuth();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
+    const [scrolled, setScrolled] = useState(false);
     const timeoutId = useRef(null);
     const navigate = useNavigate(); 
 
 
     useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 1) {
+                setScrolled(true);
+            } else {
+                setScrolled(false);
+            }
+        };
+        window.addEventListener('scroll', handleScroll);
+
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setDropdownOpen(false);
@@ -21,6 +31,7 @@ const Navbar = () => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
+            window.removeEventListener('scroll', handleScroll);
         };
     }, [dropdownRef]);
 
@@ -42,7 +53,7 @@ const Navbar = () => {
     }
 
     return (
-        <div className="fixed top-0 left-0 w-full z-50">
+        <div className={`fixed top-0 left-0 w-full z-50 transition-transform duration-300 ${scrolled ? '-translate-y-1/2' : 'translate-y-0'}`}>
             <nav className="border-gray-200 bg-gray-900 max-w-full">
                 <div className="flex flex-wrap justify-between items-center mx-auto px-12 py-4" >
                     <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
@@ -64,7 +75,6 @@ const Navbar = () => {
                             {dropdownOpen && (
                                 <div 
                                     className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-20"
-                                
                                 >    
                                 <Link
                                         to="/customer/profile"
@@ -87,9 +97,14 @@ const Navbar = () => {
                             )}
                         </div>
                         ) : (
-                            <Link to="/customer/login" className="bg-gray-700 text-white hover:bg-gray-600 rounded-lg px-5 py-1 transition-colors duration-200">
-                            Login
-                            </Link>
+                            <div className="flex space-x-4">
+  <Link to="/customer/login" className="bg-gray-700 text-white hover:bg-gray-600 rounded-lg px-5 py-1 transition-colors duration-200">
+    ログイン
+  </Link>
+  <Link to="/customer/create" className="bg-white text-gray-700 hover:bg-gray-400 rounded-lg px-5 py-1 transition-colors duration-200">
+    新規登録
+  </Link>
+</div>
                         )}
                     </div>
                 </div>
